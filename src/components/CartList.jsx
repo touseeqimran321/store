@@ -12,7 +12,7 @@ const CartList = () => {
         const userId = 5; // Replace with the actual user ID or get it from the user's authentication
 
         // Fetch cart items using Axios
-        const response = await axios.get(`https://05bc-2400-adc5-453-1500-7d00-d26c-a7b3-29a9.ngrok-free.app/api/cart/get?userId=${userId}`, {
+        const response = await axios.get(`https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app/api/cart/get?userId=${userId}`, {
           headers: { 'ngrok-skip-browser-warning': 'avoid' }
         });
 
@@ -38,7 +38,7 @@ const CartList = () => {
       const cartId = 1; // Assuming you have the cart ID stored in your cart state
       
       // Perform Axios request for checkout
-      const response = await axios.post('https://05bc-2400-adc5-453-1500-7d00-d26c-a7b3-29a9.ngrok-free.app/api/order/checkout', {
+      const response = await axios.post('https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app/api/order/checkout', {
         userId: userId,
         cartId: cartId,
       });
@@ -70,7 +70,7 @@ const CartList = () => {
           <ul className="cart-items">
             {cart.items.map((item) => (
               <li key={item.id} className="cart-item">
-                <img src={`https://05bc-2400-adc5-453-1500-7d00-d26c-a7b3-29a9.ngrok-free.app${item.Product.productImage}`} alt={item.Product.productName} className="product-image" />
+                <img src={`https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app${item.Product.productImage}`} alt={item.Product.productName} className="product-image" />
                 <p className="product-name">{item.Product.productName}</p>
                 <p className="product-price">{item.Product.productPrice}</p>
                 <p className="quantity">Quantity: {item.quantity}</p>
@@ -83,7 +83,7 @@ const CartList = () => {
           </button>
         </div>
       ) : (
-        <p>No items in the cart.</p>
+        <p>Loading...</p>
       )}
     </div>
   );

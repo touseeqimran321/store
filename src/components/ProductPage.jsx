@@ -1,6 +1,8 @@
+// AddProduct.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import './productpage.css';
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
   const [product, setProduct] = useState({
@@ -8,10 +10,11 @@ const AddProduct = () => {
     productDescription: '',
     productPrice: '',
     productImage: '',
-    quantityInstock: '' // Use null instead of an empty string for the file
+    quantityInstock: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [alert, setAlert] = useState(null); // Add this line to initialize the alert state
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,28 +24,27 @@ const AddProduct = () => {
     });
   };
 
-  const showAlert = (type, message) => {
-    setAlert({ type, message });
-    setTimeout(() => {
-      setAlert(null);
-    }, 5000);
+  const handleImageChange = (e) => {
+    const imageFile = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setProduct({
+        ...product,
+        productImage: reader.result,
+      });
+    };
+
+    if (imageFile) {
+      reader.readAsDataURL(imageFile);
+    }
   };
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
-    if (
-      product.productName.trim() === '' ||
-      product.productDescription.trim() === '' ||
-      product.productPrice.trim() === '' ||
-      product.quantityInstock.trim() === '' ||
-      !product.productImage
-    ){
-      showAlert('error', 'Please fill in all fields before adding the product.');
-      window.alert('Please fill in all fields before adding the product.'); // Add this line to show JavaScript alert
-      return;
-    }
 
     setIsSubmitting(true);
+    setLoading(true);
 
     try {
       const formData = new FormData();
@@ -52,10 +54,11 @@ const AddProduct = () => {
       formData.append('productImage', product.productImage);
       formData.append('quantityInstock', product.quantityInstock);
 
-      // Send the new product with the file to the server
-      await axios.post('https://05bc-2400-adc5-453-1500-7d00-d26c-a7b3-29a9.ngrok-free.app/api/products', formData);
-      
-      showAlert('success', 'Product added successfully!');
+      await axios.post('https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app/api/products', formData);
+
+      setLoading(false);
+      navigate('/List');
+
       setProduct({
         productName: '',
         productDescription: '',
@@ -65,7 +68,7 @@ const AddProduct = () => {
       });
     } catch (error) {
       console.error('Error adding product:', error);
-      showAlert('error', 'Error adding product. Please try again.');
+      setLoading(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -74,13 +77,9 @@ const AddProduct = () => {
   return (
     <div className="add-product-container">
       <h2>Add Product</h2>
-      {isSubmitting ? (
-        <div className="loader">Loading...</div>
-      ) : (
       <form onSubmit={handleAddProduct} encType="multipart/form-data">
         <div className="form-group">
           <label htmlFor="productName">Product Name:</label>
-          
           <input
             type="text"
             id="productName"
@@ -131,9 +130,17 @@ const AddProduct = () => {
             type="file"
             id="productImage"
             name="productImage"
-            onChange={(e) => setProduct({ ...product, productImage: e.target.files[0] })}
+            onChange={handleImageChange}
+            accept="image/*"
             required
           />
+          {product.productImage && (
+            <img
+              src={product.productImage}
+              alt="Product Preview"
+              style={{ maxWidth: '200px', marginTop: '10px' }}
+            />
+          )}
         </div>
         <div className="form-group">
           <button type="submit" disabled={isSubmitting}>
@@ -141,14 +148,8 @@ const AddProduct = () => {
           </button>
         </div>
       </form>
-      )}
-      {alert && (
-        <div className={`alert ${alert.type}`}>
-          <p>{alert.message}</p>
-        </div>
-      )}
     </div>
   );
-}
+};
 
 export default AddProduct;

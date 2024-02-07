@@ -15,7 +15,7 @@ const SignUpLogin = () => {
     try {
       if (isSignUp) {
         // Sign up logic
-        const response = await axios.post('https://05bc-2400-adc5-453-1500-7d00-d26c-a7b3-29a9.ngrok-free.app/api/signup', { username, email, password });
+        const response = await axios.post('https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app/api/signup', { username, email, password });
         console.log('Sign up successful:', response.data);
         // Display alert after successful sign-up
         window.alert('Sign up successful!');
@@ -23,7 +23,7 @@ const SignUpLogin = () => {
         navigate("/Profile");
       } else {
         // Login logic
-        const response = await axios.post('https://05bc-2400-adc5-453-1500-7d00-d26c-a7b3-29a9.ngrok-free.app/api/login', { email, password });
+        const response = await axios.post('https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app/api/login', { email, password });
         console.log('Login successful:', response.data);
         // Display alert after successful login
         window.alert('Login successful!');

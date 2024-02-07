@@ -4,16 +4,16 @@ import axios from 'axios';
 import './ProductDetails.css';
 import { Link, useNavigate } from 'react-router-dom';
 
-
-
 export default function ProductDetails({ closeDetails }) {
   const { id } = useParams();
   const [productData, setProductData] = useState(null);
+  const [quantity, setQuantity] = useState(1); // State for quantity
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const response = await axios.get(`https://05bc-2400-adc5-453-1500-7d00-d26c-a7b3-29a9.ngrok-free.app/api/products/${id}`, {
+        const response = await axios.get(`https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app/api/products/${id}`, {
           headers: {
             'ngrok-skip-browser-warning': 'avoid',
           }
@@ -31,11 +31,10 @@ export default function ProductDetails({ closeDetails }) {
     if (!productData) return; // Ensure productData is not null
 
     const productId = productData.id;
-    const quantity = 1;
-    alert('Adding product to cart');
+    alert(`Adding ${quantity} product(s) to cart`);
     try {
       const response = await axios.post(
-        'https://05bc-2400-adc5-453-1500-7d00-d26c-a7b3-29a9.ngrok-free.app/api/cart/add',
+        'https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app/api/cart/add',
         { items: [{ productId, quantity }] },
         { headers: { 'ngrok-skip-browser-warning': 'avoid' } }
       );
@@ -45,34 +44,58 @@ export default function ProductDetails({ closeDetails }) {
     } catch (error) {
       console.error('Error adding product to cart:', error);
       alert('Failed to add product to cart');
-     
-
     }
   };
- 
+
+  const handleQuantityChange = (e) => {
+    const { value } = e.target;
+    setQuantity(parseInt(value)); // Parse value to an integer
+  };
+
   return (
     <div>
       {productData && (
         <div className="product-details-container">
           <h3>Product Details</h3>
-         
           <img
             className="product-image"
-            src={`https://05bc-2400-adc5-453-1500-7d00-d26c-a7b3-29a9.ngrok-free.app${productData.productImage}`}
+            src={`https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app${productData.productImage}`}
             alt={`${productData.productName} - Product Image`}
           />
           <p><strong>Name:</strong> {productData.productName}</p>
           <p><strong>Description:</strong> {productData.productDescription}</p>
           <p><strong>Price:</strong> ${productData.productPrice}</p>
           <p><strong>Stock:</strong> {productData.quantityInstock}</p>
+  
+          {productData.quantityInstock > 0 ? (
+            <div>
+              <label htmlFor="quantity">Quantity:</label>
+              <input
+                type="number"
+                id="quantity"
+                name="quantity"
+                min="1"
+                value={quantity}
+                onChange={handleQuantityChange}
+              />
+              <button className="btn" onClick={addToCart}>
+                Add to Cart
+              </button>
+            </div>
+          ) : (
+            <div>
+              <p className="sold-out">Sold Out</p>
+              <button className="btn" disabled>
+                Add to Cart
+              </button>
+            </div>
+          )}
+  
+  <button className="btn-2" onClick={() => navigate('/List')}>Close Details</button>
 
-          <button className="btn" onClick={addToCart}>
-            Add to Cart
-          </button>
-
-          <button onClick={closeDetails} >Close Details</button>
         </div>
       )}
     </div>
   );
+  
 }
