@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './Nav.css';
 
-export default function Nav() {
-  // Assume you have a state to store the profile picture URL
-  const [profilePicture, setProfilePicture] = useState(null);
-
+export default function Nav({ profilePicture }) {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -46,7 +43,7 @@ export default function Nav() {
 
           <div className="navbar-nav ml-auto">
             <Link className="nav-link LogIn" to="/LogIn">
-Register Now
+              Register Now
             </Link>
             {profilePicture && (
               <img

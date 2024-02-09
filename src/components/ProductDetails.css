@@ -1,10 +1,11 @@
+/* ProductDetails.css */
 .product-details-container {
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 auto;
+  margin-top: 30px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #f9f9f9;
 }
 
 .product-image {
@@ -13,37 +14,35 @@
   margin-bottom: 20px;
 }
 
-.product-details-container p {
+/* Increase the font size and height of the input */
+input[type="number"] {
+  width: 100%;
+  font-size: 16px;
+  height: 40px; /* Adjust as needed */
   margin-bottom: 10px;
 }
 
-/* label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-input[type="number"] {
-  width: 60px;
-  margin-right: 10px;
-  padding: 5px;
-} */
-
+/* Adjust the layout of buttons */
 .btn {
-  padding: 10px 20px;
+  display: inline-block;
+  /* padding: 10px 20px; */
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
   background-color: #007bff;
   color: #fff;
-  border: none;
   border-radius: 5px;
+   /* Add margin between buttons */
+}
+
+.btn-2 {
+  display: inline-block;
+  /* padding: 10px 20px; */
+  font-size: 16px;
   cursor: pointer;
-  margin-right: 10px; /* Add margin-right to create space between buttons */
-}
-
-.btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.sold-out {
-  color: #ff0000;
-  font-weight: bold;
+  border: none;
+  background-color: #dc3545; /* Change button color */
+  color: #fff;
+  border-radius: 5px;
+  margin-right: 50px;
 }

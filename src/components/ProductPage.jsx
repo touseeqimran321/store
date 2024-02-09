@@ -1,4 +1,3 @@
-// AddProduct.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import './productpage.css';
@@ -9,11 +8,12 @@ const AddProduct = () => {
     productName: '',
     productDescription: '',
     productPrice: '',
-    productImage: '',
+    productImage: null,
     quantityInstock: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState('');
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -25,19 +25,11 @@ const AddProduct = () => {
   };
 
   const handleImageChange = (e) => {
-    const imageFile = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setProduct({
-        ...product,
-        productImage: reader.result,
-      });
-    };
-
-    if (imageFile) {
-      reader.readAsDataURL(imageFile);
-    }
+    const imageFile = e.target.files[0]; // Get the first file selected
+    setProduct({
+      ...product,
+      productImage: imageFile, // Store the file object
+    });
   };
 
   const handleAddProduct = async (e) => {
@@ -54,21 +46,23 @@ const AddProduct = () => {
       formData.append('productImage', product.productImage);
       formData.append('quantityInstock', product.quantityInstock);
 
-      await axios.post('https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app/api/products', formData);
+      await axios.post('https://372e-2400-adc5-453-1500-956f-1ac2-a4bc-a511.ngrok-free.app/api/products', formData);
 
       setLoading(false);
       navigate('/List');
 
+      setAlert('Product added successfully');
       setProduct({
         productName: '',
         productDescription: '',
         productPrice: '',
-        productImage: '',
+        productImage: null,
         quantityInstock: ''
       });
     } catch (error) {
       console.error('Error adding product:', error);
       setLoading(false);
+      setAlert('Error adding product. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -76,8 +70,14 @@ const AddProduct = () => {
 
   return (
     <div className="add-product-container">
+      {loading && (
+        <div className="overlay">
+          <div className="loader"></div>
+        </div>
+      )}
       <h2>Add Product</h2>
       <form onSubmit={handleAddProduct} encType="multipart/form-data">
+        {/* {alert && <div className={`alert ${alert.startsWith('Error') ? 'error' : 'success'}`}>{alert}</div>} */}
         <div className="form-group">
           <label htmlFor="productName">Product Name:</label>
           <input
@@ -131,16 +131,17 @@ const AddProduct = () => {
             id="productImage"
             name="productImage"
             onChange={handleImageChange}
+            // value={product.productImage}
             accept="image/*"
             required
           />
-          {product.productImage && (
+          {/* {product.productImage && (
             <img
               src={product.productImage}
               alt="Product Preview"
               style={{ maxWidth: '200px', marginTop: '10px' }}
             />
-          )}
+          )} */}
         </div>
         <div className="form-group">
           <button type="submit" disabled={isSubmitting}>

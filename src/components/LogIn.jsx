@@ -1,48 +1,50 @@
 import React, { useState } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { BallTriangle } from 'react-loader-spinner';
 
 const SignUpLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [isSignUp, setIsSignUp] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    setIsLoading(true);
+
     try {
       if (isSignUp) {
-        // Sign up logic
-        const response = await axios.post('https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app/api/signup', { username, email, password });
+        const response = await axios.post('https://372e-2400-adc5-453-1500-956f-1ac2-a4bc-a511.ngrok-free.app/api/signup', { username, email, password });
         console.log('Sign up successful:', response.data);
-        // Display alert after successful sign-up
-        window.alert('Sign up successful!');
-        // Navigate only after successful signup
-        navigate("/Profile");
+        setAlertMessage('Sign up successful!');
+        localStorage.setItem('authenticated', 'true'); // Set authentication flag
+        navigate("/List");
       } else {
-        // Login logic
-        const response = await axios.post('https://219f-2400-adc5-453-1500-1911-44a6-7f72-45aa.ngrok-free.app/api/login', { email, password });
+        const response = await axios.post('https://372e-2400-adc5-453-1500-956f-1ac2-a4bc-a511.ngrok-free.app/api/login', { email, password });
         console.log('Login successful:', response.data);
-        // Display alert after successful login
-        window.alert('Login successful!');
-        // Navigate only after successful login
-        navigate("/Profile");
+        setAlertMessage('Login successful!');
+        localStorage.setItem('authenticated', 'true'); // Set authentication flag
+        navigate("/List");
       }
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : error.message);
-      // Display alert for errors
-      window.alert('Error occurred. Please try again.');
+      setAlertMessage('Error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
-  
 
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2>{isSignUp ? 'Sign Up' : 'Login'}</h2>
+          {alertMessage && <div className={`alert ${alertMessage.includes('successful') ? 'alert-success' : 'alert-danger'}`} role="alert">{alertMessage}</div>}
           <form onSubmit={handleSubmit}>
             {isSignUp && (
               <div className="mb-3">
@@ -79,14 +81,13 @@ const SignUpLogin = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary">{isSignUp ? 'Sign Up' : 'Login'}</button>
+            <button type="submit" className="btn btn-primary">{isLoading ? <BallTriangle type="ThreeDots" color="#fff" height={10} width={30} /> : isSignUp ? 'Sign Up' : 'Login'}</button>
           </form>
           <p className="mt-3">
             {isSignUp ? 'Already have an account? ' : 'Don\'t have an account? '}
             <Link to="/SignUp" onClick={() => setIsSignUp(!isSignUp)}>
-  {isSignUp ? 'Login' : 'Sign Up'}
-</Link>
-
+              {isSignUp ? 'Login' : 'Sign Up'}
+            </Link>
           </p>
         </div>
       </div>
@@ -95,4 +96,3 @@ const SignUpLogin = () => {
 };
 
 export default SignUpLogin;
-//  loader , css alert , 

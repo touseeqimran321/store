@@ -92,3 +92,17 @@
 .desc{
   height:70px;
 }
+
+
+@media screen and (max-width: 1024px) {
+  .product-item {
+    width: calc(50% - 20px); /* Adjust width for medium screens */
+  }
+}
+
+/* For smaller screens like mobile phones */
+@media screen and (max-width: 768px) {
+  .product-item {
+    width: calc(100% - 20px); /* Set full width for small screens */
+  }
+}
