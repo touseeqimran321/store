@@ -22,13 +22,13 @@ const SignUpLogin = () => {
         const response = await axios.post('https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app/api/signup', { username, email, password });
         console.log('Sign up successful:', response.data);
         setAlertMessage('Sign up successful!');
-        localStorage.setItem('authenticated', 'true'); // Set authentication flag
+        localStorage.setItem('token', response.data.token); // Set authentication flag
         navigate("/List");
       } else {
         const response = await axios.post('https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app/api/login', { email, password });
         console.log('Login successful:', response.data);
         setAlertMessage('Login successful!');
-        localStorage.setItem('authenticated', 'true'); // Set authentication flag
+        localStorage.setItem('token', response.data.token); // Set authentication flag
         navigate("/List");
       }
     } catch (error) {

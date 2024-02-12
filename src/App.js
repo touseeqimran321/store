@@ -7,6 +7,8 @@ import Cart from './components/CartList';
 import LogIn from './components/LogIn';
 import Profile from './components/Profile';
 import ProductDetails from './components/ProductDetails';
+import Checkoutform from './components/Checkoutform';
+import SucessFull from './components/SucessFull';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,18 @@ const router = createBrowserRouter([
   {
     path:'/product/:id',
     element:<div> <Nav /><ProductDetails /></div>, // Include Nav component here
+  },
+  {
+    path:'/Checkoutform',
+    element:<div> <Nav /><Checkoutform /></div>, // Include Nav component here
+  },
+  {
+    path:'/SucessFull',
+    element:<div> <Nav /><SucessFull /></div>, // Include Nav component here
+  },
+  {
+    path:'/Profile',
+    element:<div> <Nav /><Profile /></div>, // Include Nav component here
   }
 ]);
 

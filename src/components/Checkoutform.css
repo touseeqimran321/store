@@ -1,0 +1,70 @@
+.container {
+  max-width: 600px;
+  margin: 30px auto; /* Added margin */
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-info {
+  margin-top: 20px;
+}
+
+.checkout-info form {
+  margin-bottom: 20px;
+}
+
+.checkout-info input[type="text"] {
+  width: 100%; /* Adjusted width to fill container */
+  padding: 10px;
+  margin-bottom: 20px; /* Increased margin-bottom */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.checkout-info h2 {
+  margin-bottom: 20px; /* Increased margin-bottom */
+}
+
+.btn-4 {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 30px; /* Added margin-top */
+}
+
+.checkout-info button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

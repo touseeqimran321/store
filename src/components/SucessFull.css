@@ -1,0 +1,38 @@
+/* SucessFull.css */
+
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .success-text {
+    font-size: 80px;
+    color: #007bff;
+    animation: fadeIn 2s ease; /* Define the fadeIn animation */
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  /* Define the fadeOut animation */
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  .success-text.fade-out {
+    animation: fadeOut 2s ease; /* Apply the fadeOut animation when the 'fade-out' class is added */
+  }
+  

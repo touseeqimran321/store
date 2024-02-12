@@ -63,7 +63,7 @@ const ProductList = () => {
       setIsLoading(false);
     }
   };
-
+    
   const handleLinkClick = () => {
     setIsLoading(true);
   };

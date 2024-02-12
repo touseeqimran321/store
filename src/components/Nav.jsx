@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Nav.css';
 
-export default function Nav({ profilePicture }) {
+export default function Nav({ profilePicture, isAuthenticated }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isLoading, setIsLoading] = useState(false); // State for loader visibility
 
@@ -68,12 +68,14 @@ export default function Nav({ profilePicture }) {
                 Cart
               </Link>
             </li>
-            {/* Move the "Register Now" link inside the collapsible part */}
-            <li className="nav-item d-lg-none"> {/* Hide on large screens */}
-              <Link className="nav-link LogIn" to="/LogIn">
-                Register Now
-              </Link>
-            </li>
+            {/* Render profile link if user is authenticated */}
+            {isAuthenticated && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/profile">
+                  Profile
+                </Link>
+              </li>
+            )}
           </ul>
           {/* Render profile picture only if available */}
           {profilePicture && (
@@ -88,8 +90,8 @@ export default function Nav({ profilePicture }) {
             </ul>
           )}
         </div>
-        {/* Render "Register Now" link for large screens */}
-        {!profilePicture && (
+        {/* Render "Register Now" link for large screens if not authenticated */}
+        {!isAuthenticated && (
           <div className="d-none d-lg-block"> {/* Hide on small screens */}
             <ul className="navbar-nav">
               <li className="nav-item">
