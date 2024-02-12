@@ -12,7 +12,7 @@ const ProductList = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get('https://372e-2400-adc5-453-1500-956f-1ac2-a4bc-a511.ngrok-free.app/api/products', {
+        const response = await axios.get('https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app/api/products', {
           headers: {
             'ngrok-skip-browser-warning': 'avoid',
           },
@@ -42,7 +42,7 @@ const ProductList = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        'https://372e-2400-adc5-453-1500-956f-1ac2-a4bc-a511.ngrok-free.app/api/cart/add',
+        'https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app/api/cart/add',
         {
           items: [{ productId, quantity }],
         },
@@ -64,8 +64,17 @@ const ProductList = () => {
     }
   };
 
+  const handleLinkClick = () => {
+    setIsLoading(true);
+  };
+
   return (
     <div className="product-list-container">
+      {isLoading && (
+        <div className="overlay">
+          <div className="loader"></div>
+        </div>
+      )}
       <h2>Product List</h2>
       {isLoading ? (
         <p>Loading...</p>
@@ -76,13 +85,19 @@ const ProductList = () => {
           {products.map((product) => (
             <li key={product.id} className="product-item">
               <div>
-                <Link to={`/product/${product.id}`}>
-                  <img
-                    className="product-image-1"
-                    src={`https://372e-2400-adc5-453-1500-956f-1ac2-a4bc-a511.ngrok-free.app${product.productImage}`}
-                    alt={`${product.productName} - Product Image`}
-                  />
-                </Link>
+              <Link to={`/product/${product.id}`} onClick={handleLinkClick} >
+  {isLoading && (
+        <div className="overlay">
+          <div className="loader"></div>
+        </div>
+      )}
+  <img
+    className="product-image-1"
+    src={`https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app${product.productImage}`}
+    alt={`${product.productName} - Product Image`}
+  />
+</Link>
+
               </div>
               <h3 className='name'>{product.productName}</h3>
               <p className='desc'>Description: {product.productDescription}</p>

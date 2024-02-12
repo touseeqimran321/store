@@ -1,48 +1,74 @@
-/* ProductDetails.css */
 .product-details-container {
-  max-width: 500px;
-  margin: 0 auto;
-  margin-top: 30px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.product-image {
-  max-width: 100%;
-  height: auto;
+.product-image-container {
   margin-bottom: 20px;
 }
 
-/* Increase the font size and height of the input */
-input[type="number"] {
-  width: 100%;
-  font-size: 16px;
-  height: 40px; /* Adjust as needed */
+.product-image-2 {
+  width: 350px;
+  height: 200px;
+}
+
+.product-info-container {
+  text-align: center;
+}
+
+.product-name {
+  font-size: 24px;
   margin-bottom: 10px;
 }
 
-/* Adjust the layout of buttons */
-.btn {
-  display: inline-block;
-  /* padding: 10px 20px; */
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 5px;
-   /* Add margin between buttons */
+.product-description {
+  margin-bottom: 10px;
 }
 
-.btn-2 {
-  display: inline-block;
-  /* padding: 10px 20px; */
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  background-color: #dc3545; /* Change button color */
+.product-price {
+  margin-bottom: 10px;
+}
+
+.product-stock {
+  margin-bottom: 20px;
+}
+
+.quantity-container {
+  margin-bottom: 20px;
+}
+
+.quantity-label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.quantity-input {
+  width: 80px;
+}
+
+.add-to-cart-btn {
+  background-color: #007bff;
   color: #fff;
+  padding: 10px 20px;
+  border: none;
   border-radius: 5px;
-  margin-right: 50px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.add-to-cart-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.close-details-btn {
+  margin-top: 20px;
+  background-color: #dc3545;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px; /* Add font size value here */
 }

@@ -6,14 +6,17 @@ const CartList = () => {
   const [loading, setLoading] = useState(false);
   const [cart, setCart] = useState({ id: null, items: [] });
   const [totalPrice, setTotalPrice] = useState(0);
+  const [shippingInfo, setShippingInfo] = useState({});
+  const [paymentInfo, setPaymentInfo] = useState({});
+  const [checkoutClicked, setCheckoutClicked] = useState(false);
+  const [checkoutCompleted, setCheckoutCompleted] = useState(false);
 
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
         const userId = 5; // Replace with the actual user ID or get it from the user's authentication
 
-        // Fetch cart items using Axios
-        const response = await axios.get(`https://372e-2400-adc5-453-1500-956f-1ac2-a4bc-a511.ngrok-free.app/api/cart/get?userId=${userId}`, {
+        const response = await axios.get(`https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app/api/cart/get?userId=${userId}`, {
           headers: { 'ngrok-skip-browser-warning': 'avoid' }
         });
 
@@ -21,12 +24,10 @@ const CartList = () => {
           setCart({ id: response.data.cartId, items: response.data.cartItems });
           calculateTotalPrice(response.data.cartItems);
         } else {
-          // Handle error - you can update your UI accordingly
           console.error('Error fetching cart items:', response.data.error);
         }
       } catch (error) {
         console.error('Error:', error);
-        // Handle error - you can update your UI accordingly
       }
     };
 
@@ -41,48 +42,64 @@ const CartList = () => {
     setTotalPrice(total);
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
+    setCheckoutClicked(true);
+  };
+
+  const handleShippingChange = (e) => {
+    const { name, value } = e.target;
+    setShippingInfo({ ...shippingInfo, [name]: value });
+  };
+
+  const handlePaymentChange = (e) => {
+    const { name, value } = e.target;
+    setPaymentInfo({ ...paymentInfo, [name]: value });
+  };
+
+  const handleSubmitOrder = async () => {
     try {
       setLoading(true);
       const userId = 5; // Replace with the actual user ID or get it from the user's authentication
-      const cartId = 1; // Assuming you have the cart ID stored in your cart state
 
-      // Perform Axios request for checkout
-      const response = await axios.post('https://372e-2400-adc5-453-1500-956f-1ac2-a4bc-a511.ngrok-free.app/api/order/checkout', {
+      const orderData = {
         userId: userId,
-        cartId: cartId,
-      });
+        cartId: cart.id,
+        shippingInfo: shippingInfo,
+        paymentInfo: paymentInfo,
+      };
 
-      // Check if the checkout was successful
+      const response = await axios.post('https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app/api/order/checkout', orderData);
+
       if (response.status === 201) {
-        alert('Checkout successful');
-        console.log("Checkout Successfully", response.data);
-        // Update the cart items after checkout
-        setCart({ id: cart.id, items: cart.items.map(item => ({...item, status: 'Completed'})) });
-        calculateTotalPrice(cart.items);
+        setCheckoutCompleted(true);
+        setCheckoutClicked(false); // Reset checkout state
+        // Optionally, you can clear the cart or redirect to a success page here
       } else {
-        // Handle error - you can update your UI accordingly
-        console.error('No active item in the product:', response.data.error);
-        alert('No active item');
+        console.error('Checkout failed:', response.data.error);
+        // Handle checkout failure
       }
     } catch (error) {
-      // Handle error - you can update your UI accordingly
       console.error('Error during checkout:', error);
-      alert('Failed to checkout');
+      // Handle error during checkout
     } finally {
-      setLoading(false); // Reset loading state regardless of the checkout result
+      setLoading(false);
     }
   };
 
   return (
     <div className="cart-container">
+      {loading && (
+        <div className="overlay">
+          <div className="loader"></div>
+        </div>
+      )}
       <h2 className="cart-title">Shopping Cart</h2>
       {cart.items.length > 0 ? (
         <div>
           <ul className="cart-items">
             {cart.items.map((item) => (
               <li key={item.id} className={`cart-item ${item.status === 'Completed' ? 'completed' : ''}`}>
-                <img src={`https://372e-2400-adc5-453-1500-956f-1ac2-a4bc-a511.ngrok-free.app${item.Product.productImage}`} alt={item.Product.productName} className="product-image" />
+                <img src={`https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app${item.Product.productImage}`} alt={item.Product.productName} className="product-image" />
                 <div className="product-details">
                   <p className="product-name">{item.Product.productName}</p>
                   <p className="product-price">Price: ${item.Product.productPrice}</p>
@@ -93,9 +110,36 @@ const CartList = () => {
             ))}
           </ul>
           <p>Total Price: ${totalPrice}</p>
-          <button type="submit" onClick={handleCheckout} disabled={loading}>
-            {loading ? 'Checking Product...' : 'Checkout'}
-          </button>
+          {!checkoutClicked && (
+            <button type="button" onClick={handleCheckout} disabled={loading}>
+              {loading ? 'Conforming Product...' : 'Conform order'}
+            </button>
+          )}
+          {checkoutClicked && !checkoutCompleted && (
+            <div className="checkout-info">
+              <h2>Shipping Information</h2>
+              <form>
+                <input type="text" name="name" placeholder="Name" onChange={handleShippingChange} required />
+                <input type="text" name="address" placeholder="Address" onChange={handleShippingChange} required />
+                <input type="text" name="phone" placeholder="Phone" onChange={handleShippingChange} required />
+              </form>
+              <h2>Payment Information</h2>
+              <form>
+                <input type="text" name="cardNumber" placeholder="Card Number" onChange={handlePaymentChange} required />
+                <input type="text" name="expirationDate" placeholder="Expiration Date" onChange={handlePaymentChange} required />
+                <input type="text" name="cvv" placeholder="CVV" onChange={handlePaymentChange} required />
+              </form>
+              <button type="button" onClick={handleSubmitOrder} disabled={loading}>
+                {loading ? 'Processing...' : 'Checkout'}
+              </button>
+            </div>
+          )}
+          {checkoutCompleted && (
+            <div className="checkout-completed">
+              <h2>Order Placed Successfully!</h2>
+              {/* Optionally display order summary or redirect to a success page */}
+            </div>
+          )}
         </div>
       ) : (
         <p>Loading...</p>

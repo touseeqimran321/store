@@ -46,7 +46,7 @@ const AddProduct = () => {
       formData.append('productImage', product.productImage);
       formData.append('quantityInstock', product.quantityInstock);
 
-      await axios.post('https://372e-2400-adc5-453-1500-956f-1ac2-a4bc-a511.ngrok-free.app/api/products', formData);
+      await axios.post('https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app/api/products', formData);
 
       setLoading(false);
       navigate('/List');
