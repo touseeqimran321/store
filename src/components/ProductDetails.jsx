@@ -15,7 +15,7 @@ export default function ProductDetails() {
     const fetchProductDetails = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app/api/products/${id}`, {
+        const response = await axios.get(`https://0ec3-2400-adc5-453-1500-907c-6c3d-f922-3664.ngrok-free.app/api/products/${id}`, {
           headers: {
             'ngrok-skip-browser-warning': 'avoid',
           }
@@ -40,7 +40,7 @@ export default function ProductDetails() {
     // alert(`Adding ${quantity} product(s) to cart`);
     try {
       const response = await axios.post(
-        'https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app/api/cart/add',
+        'https://0ec3-2400-adc5-453-1500-907c-6c3d-f922-3664.ngrok-free.app/api/cart/add',
         { items: [{ productId, quantity }] },
         { headers: { 'ngrok-skip-browser-warning': 'avoid' } }
       );
@@ -72,7 +72,7 @@ export default function ProductDetails() {
           <div className="product-image-container">
             <img
               className="product-image-2"
-              src={`https://968a-2400-adc5-453-1500-f8f4-fe31-4c5a-1750.ngrok-free.app${productData.productImage}`}
+              src={`https://0ec3-2400-adc5-453-1500-907c-6c3d-f922-3664.ngrok-free.app${productData.productImage}`}
               alt={`${productData.productName} - Product Image`}
             />
           </div>
