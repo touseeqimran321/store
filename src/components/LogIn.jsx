@@ -1,50 +1,33 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { BallTriangle } from 'react-loader-spinner';
+import { useAuth } from '../AuthContext';
 
 const SignUpLogin = () => {
-  const [email, setEmail] = useState('');
+  const { signup, login, isLoading, error } = useAuth();
+  const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [isSignUp, setIsSignUp] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      if (isSignUp) {
-        const response = await axios.post('https://0ec3-2400-adc5-453-1500-907c-6c3d-f922-3664.ngrok-free.app/api/signup', { username, email, password });
-        console.log('Sign up successful:', response.data);
-        setAlertMessage('Sign up successful!');
-        localStorage.setItem('token', response.data.token); // Set authentication flag
-        navigate("/List");
-      } else {
-        const response = await axios.post('https://0ec3-2400-adc5-453-1500-907c-6c3d-f922-3664.ngrok-free.app/api/login', { email, password });
-        console.log('Login successful:', response.data);
-        setAlertMessage('Login successful!');
-        localStorage.setItem('token', response.data.token); // Set authentication flag
-        navigate("/List");
-      }
-    } catch (error) {
-      console.error('Error:', error.response ? error.response.data : error.message);
-      setAlertMessage('Error occurred. Please try again.');
-    } finally {
-      setIsLoading(false);
+    if (isSignUp) {
+      await signup({ username, email, password });
+    } else {
+      await login({ email, password });
     }
+    navigate("/List");
   };
 
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
-        <div className="col-md-6">
+        <div className="col-md-6 form-container">
           <h2>{isSignUp ? 'Sign Up' : 'Login'}</h2>
-          {alertMessage && <div className={`alert ${alertMessage.includes('successful') ? 'alert-success' : 'alert-danger'}`} role="alert">{alertMessage}</div>}
+          {error && <div className="alert alert-danger">{error}</div>}
           <form onSubmit={handleSubmit}>
             {isSignUp && (
               <div className="mb-3">

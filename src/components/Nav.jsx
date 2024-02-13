@@ -2,20 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Nav.css';
 
-export default function Nav({ profilePicture, isAuthenticated }) {
+export default function Nav({ profilePicture, isAuthenticated, handleNavigationClick }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isLoading, setIsLoading] = useState(false); // State for loader visibility
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
-  };
-
-  const handleNavigationClick = () => {
-    setIsLoading(true); // Show loader when navigation link is clicked
-    // Simulate navigation delay (you can replace this with your actual navigation logic)
-    setTimeout(() => {
-      setIsLoading(false); // Hide loader after navigation is complete
-    }, 1000);
   };
 
   return (

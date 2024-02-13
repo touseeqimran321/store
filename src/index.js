@@ -1,8 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
 import router from './App';
 import reportWebVitals from './reportWebVitals';
+import { AuthProvider } from './AuthContext'; // Import AuthProvider from AuthContext
 
 import {
   RouterProvider,
@@ -11,7 +12,9 @@ import {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider> {/* Wrap your RouterProvider with AuthProvider */}
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
 
