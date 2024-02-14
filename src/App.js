@@ -11,6 +11,7 @@ import Checkoutform from './components/Checkoutform';
 import SucessFull from './components/SucessFull';
 import Dashboard from './components/Dashboard';
 import LineChartPage from './components/LineChart';
+import AuthContext from './AuthContext';
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
   {
     path:'/LineChart',
     element:<div> <Nav /><LineChartPage/></div>, // Include Nav component here
+  },
+  {
+    path:'/AuthContext',
+    element:<div> <Nav /><AuthContext/></div>, // Include Nav component here
   }
 ]);
 
