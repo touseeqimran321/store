@@ -9,6 +9,8 @@ import Profile from './components/Profile';
 import ProductDetails from './components/ProductDetails';
 import Checkoutform from './components/Checkoutform';
 import SucessFull from './components/SucessFull';
+import Dashboard from './components/Dashboard';
+import LineChartPage from './components/LineChart';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +48,14 @@ const router = createBrowserRouter([
   {
     path:'/Profile',
     element:<div> <Nav /><Profile /></div>, // Include Nav component here
+  },
+  {
+    path:'/Dashboard',
+    element:<div> <Nav /><Dashboard /></div>, // Include Nav component here
+  },
+  {
+    path:'/LineChart',
+    element:<div> <Nav /><LineChartPage/></div>, // Include Nav component here
   }
 ]);
 

@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async ({ username, email, password }) => {
     setIsLoading(true);
     try {
-      const response = await axios.post('https://0ec3-2400-adc5-453-1500-907c-6c3d-f922-3664.ngrok-free.app/api/signup', { username, email, password });
+      const response = await axios.post('https://b900-2400-adc5-453-1500-a1d4-4470-86a4-b539.ngrok-free.app/api/signup', { username, email, password });
       setUser(response.data.user);
       localStorage.setItem('token', response.data.token);
     } catch (error) {
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
   const login = async ({ email, password }) => {
     setIsLoading(true);
     try {
-      const response = await axios.post('https://0ec3-2400-adc5-453-1500-907c-6c3d-f922-3664.ngrok-free.app/api/login', { email, password });
+      const response = await axios.post('https://b900-2400-adc5-453-1500-a1d4-4470-86a4-b539.ngrok-free.app/api/login', { email, password });
       setUser(response.data.user);
       localStorage.setItem('token', response.data.token);
     } catch (error) {
