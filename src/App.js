@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter } from "react-router-dom";  
+import { createBrowserRouter } from 'react-router-dom';  
 import ProductPage from './components/ProductPage';
 import Nav from './components/Nav'; // Import the Nav component
 import ProductList from './components/ProductList';
@@ -11,7 +11,8 @@ import Checkoutform from './components/Checkoutform';
 import SucessFull from './components/SucessFull';
 import Dashboard from './components/Dashboard';
 import LineChartPage from './components/LineChart';
-import AuthContext from './AuthContext';
+import { AuthProvider } from './AuthContext'; // Import AuthProvider from AuthContext
+import ParentComponent from './components/ParentComponent';
 
 const router = createBrowserRouter([
   {
@@ -58,10 +59,12 @@ const router = createBrowserRouter([
     path:'/LineChart',
     element:<div> <Nav /><LineChartPage/></div>, // Include Nav component here
   },
-  {
-    path:'/AuthContext',
-    element:<div> <Nav /><AuthContext/></div>, // Include Nav component here
-  }
 ]);
 
-export default router;
+const AppRouter = () => (
+  <AuthProvider>
+    {router}
+  </AuthProvider>
+);
+
+export default AppRouter;

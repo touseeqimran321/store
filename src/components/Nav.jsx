@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Nav.css';
 
-export default function Nav({ profilePicture, isAuthenticated, handleNavigationClick }) {
+export default function Nav({ isAuthenticated, handleNavigationClick, user }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isLoading, setIsLoading] = useState(false); // State for loader visibility
 
@@ -69,31 +69,24 @@ export default function Nav({ profilePicture, isAuthenticated, handleNavigationC
               </li>
             )}
           </ul>
-          {/* Render profile picture only if available */}
-          {profilePicture && (
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <img
-                  src={profilePicture}
-                  alt="Profile"
-                  className="profile-picture"
-                />
-              </li>
-            </ul>
-          )}
         </div>
-        {/* Render "Register Now" link for large screens if not authenticated */}
-        {!isAuthenticated && (
-          <div className="d-none d-lg-block"> {/* Hide on small screens */}
-            <ul className="navbar-nav">
+        {/* Render user info or "Register Now" link based on authentication */}
+        <div className="d-none d-lg-block"> {/* Hide on small screens */}
+          <ul className="navbar-nav">
+            {/* Use ternary operator to conditionally render */}
+            {isAuthenticated ? (
+              <li className="nav-item">
+                <span className="nav-link">Welcome, {user.username}</span>
+              </li>
+            ) : (
               <li className="nav-item">
                 <Link className="nav-link LogIn" to="/LogIn">
                   Register Now
                 </Link>
               </li>
-            </ul>
-          </div>
-        )}
+            )}
+          </ul>
+        </div>
       </div>
     </nav>
   );
