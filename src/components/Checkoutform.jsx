@@ -26,7 +26,7 @@ const CheckoutForm = ({ setCheckoutCompleted }) => {
       
       // Simulate a delay of 2 seconds for demonstration
       await new Promise(resolve => setTimeout(resolve, 2000));
-      const userId = 5; // Replace with the actual user ID or get it from the user's authentication
+      const userId = 1; // Replace with the actual user ID or get it from the user's authentication
 
       const orderData = {
         userId: userId,
@@ -34,7 +34,7 @@ const CheckoutForm = ({ setCheckoutCompleted }) => {
         paymentInfo: paymentInfo,
       };
 
-      const response = await axios.post('https://33b5-2400-adc5-453-1500-20b2-db3e-92c6-6d1f.ngrok-free.app/api/order/checkout', orderData);
+      const response = await axios.post('https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app/api/order/checkout', orderData);
 
       if (response.status === 201) {
         // setCheckoutCompleted(true);

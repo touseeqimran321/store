@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Nav.css';
+import { useAuth } from '../AuthContext';
 
-export default function Nav({ isAuthenticated, handleNavigationClick, user }) {
+export default function Nav({ handleNavigationClick }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [isLoading, setIsLoading] = useState(false); // State for loader visibility
+  const [showProfileOptions, setShowProfileOptions] = useState(false); // State for profile options visibility
+  const { isAuthenticated, logout } = useAuth();
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
 
+  const handleProfileClick = () => {
+    setShowProfileOptions(prevState => !prevState);
+  }
+
+  const handleLogout = () => {
+    logout();
+    setShowProfileOptions(false);
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      {isLoading && ( // Render loader if isLoading is true
-        <div className="loader-overlay">
-          <div className="loader"></div>
-        </div>
-      )}
       <div className="container-fluid">
         <div className="navbar-brand-wrapper">
           <Link className="navbar-brand" to="/List">
@@ -60,23 +66,30 @@ export default function Nav({ isAuthenticated, handleNavigationClick, user }) {
                 Cart
               </Link>
             </li>
-            {/* Render profile link if user is authenticated */}
             {isAuthenticated && (
               <li className="nav-item">
-                <Link className="nav-link" to="/profile">
-                  Profile
-                </Link>
+                <Link className="nav-link" to="/Profile">Profile</Link>
               </li>
             )}
           </ul>
         </div>
-        {/* Render user info or "Register Now" link based on authentication */}
         <div className="d-none d-lg-block"> {/* Hide on small screens */}
           <ul className="navbar-nav">
-            {/* Use ternary operator to conditionally render */}
             {isAuthenticated ? (
-              <li className="nav-item">
-                <span className="nav-link">Welcome, {user.username}</span>
+              <li className="nav-item dropdown">
+                <button 
+                  className="nav-link dropdown-toggle" 
+                  onClick={handleProfileClick}
+                  aria-expanded={showProfileOptions ? "true" : "false"} // Indicate whether dropdown is open
+                >
+                  Profile
+                </button>
+                {showProfileOptions && (
+                  <ul className="dropdown-menu dropdown-menu-end">
+                    <li><Link className="dropdown-item" to="/Settings">Settings</Link></li>
+                    <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+                  </ul>
+                )}
               </li>
             ) : (
               <li className="nav-item">

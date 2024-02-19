@@ -1,4 +1,3 @@
-// AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -10,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
           throw new Error('Token not found');
         }
 
-        const response = await axios.get('https://33b5-2400-adc5-453-1500-20b2-db3e-92c6-6d1f.ngrok-free.app/api/user', {
+        const response = await axios.get('https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app/api/user', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -36,39 +36,42 @@ export const AuthProvider = ({ children }) => {
   const signup = async ({ username, email, password }) => {
     setIsLoading(true);
     try {
-      const response = await axios.post('https://33b5-2400-adc5-453-1500-20b2-db3e-92c6-6d1f.ngrok-free.app/api/signup', { username, email, password });
+      // Check if the user already exists
+      const userExistsResponse = await checkUserExists(email);
+      if (userExistsResponse.exists) {
+        throw new Error('User already exists');
+      }
+
+      const response = await axios.post('https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app/api/signup', { username, email, password });
       setUser(response.data.user);
       const { token } = response.data;
       localStorage.setItem('token', token);
-      alert('Signup successful! Welcome aboard!');
+      setIsAuthenticated(true);
+      
     } catch (error) {
       if (error.response && error.response.data) {
         setError(error.response.data.message);
-        alert(`Error: ${error.response.data.message}`);
       } else {
         setError('An error occurred while processing your request.');
-        alert('An error occurred while processing your request.');
       }
     }
     setIsLoading(false);
   };
-  
+
   const login = async ({ email, password }) => {
     setIsLoading(true);
     try {
-      const response = await axios.post('https://33b5-2400-adc5-453-1500-20b2-db3e-92c6-6d1f.ngrok-free.app/api/login', { email, password });
+      const response = await axios.post('https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app/api/login', { email, password });
       const { token, user } = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
-      alert('Login successful! Welcome back!');
+      setIsAuthenticated(true);
     } catch (error) {
       if (error.response && error.response.data) {
         setError(error.response.data.message);
-        alert(`Error: ${error.response.data.message}`);
       } else {
         setError('An error occurred while processing your request.');
-        alert('An error occurred while processing your request.');
       }
     } finally {
       setIsLoading(false);
@@ -82,8 +85,18 @@ export const AuthProvider = ({ children }) => {
     alert('Logout successful! Goodbye!');
   };
 
+  const checkUserExists = async (email) => {
+    try {
+      const response = await axios.post('https://f15f-111-88-233-53.ngrok-free.app/api/checkUser', { email });
+      return { exists: response.data.exists };
+    } catch (error) {
+      console.error('Error checking if user exists:', error);
+      return { exists: false };
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, error, signup, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, isLoading, error, signup, login, logout }}>
       <ParentComponent>
         {children}
       </ParentComponent>

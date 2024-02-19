@@ -16,10 +16,12 @@ const SignUpLogin = () => {
     e.preventDefault();
     if (isSignUp) {
       await signup({ username, email, password });
+      navigate('/List')
     } else {
       await login({ email, password });
+       navigate("/List");
     }
-    navigate("/List");
+   
   };
 
   return (

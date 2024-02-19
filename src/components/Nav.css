@@ -71,6 +71,34 @@
   transform: scale(1.1);
 }
 
+/* Nav.css */
+
+/* Style for dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+}
+
+/* Style for dropdown menu items */
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+/* Style for dropdown menu items on hover */
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
   
   @keyframes spin {
     0% { transform: rotate(0deg); }

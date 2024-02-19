@@ -11,30 +11,37 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(`https://b900-2400-adc5-453-1500-a1d4-4470-86a4-b539.ngrok-free.app/api/user/${user.id}`);
-        setProfileUser(response.data);
+        if (user) {
+          const userId = user.id; // Access the user ID from the user object
+          const response = await axios.get(`https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app/api/user/${userId}`, {
+            headers: {
+              'ngrok-skip-browser-warning': 'avoid'
+            }
+          });
+          setProfileUser(response.data);
+        }
       } catch (error) {
         setError('Error fetching user data');
       } finally {
         setLoading(false);
       }
     };
-
-    if (user) {
-      fetchUserProfile();
-    }
+  
+    fetchUserProfile();
   }, [user]);
 
   return (
     <div>
       {error && <p>{error}</p>}
-      {profileUser && (
+      {profileUser !== null ? (
         <div>
           <h2>User Profile</h2>
           <p>Username: {profileUser.username}</p>
           <p>Email: {profileUser.email}</p>
           {/* Display other user data as needed */}
         </div>
+      ) : (
+        <p>User does not exist</p>
       )}
     </div>
   );

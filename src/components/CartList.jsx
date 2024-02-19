@@ -14,9 +14,9 @@ const CartList = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const userId = 5; // Replace with the actual user ID or get it from the user's authentication
+        const userId = 1; // Replace with the actual user ID or get it from the user's authentication
 
-        const response = await axios.get(`https://33b5-2400-adc5-453-1500-20b2-db3e-92c6-6d1f.ngrok-free.app/api/cart/get?userId=${userId}`, {
+        const response = await axios.get(`https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app/api/cart/get?userId=${userId}`, {
           headers: { 'ngrok-skip-browser-warning': 'avoid' }
         });
 
@@ -70,7 +70,7 @@ const CartList = () => {
           <ul className="cart-items">
             {cart.items.map((item) => (
               <li key={item.id} className={`cart-item ${item.status === 'Completed' ? 'completed' : ''}`}>
-                <img src={`https://33b5-2400-adc5-453-1500-20b2-db3e-92c6-6d1f.ngrok-free.app${item.Product.productImage}`} alt={item.Product.productName} className="product-image" />
+                <img src={`https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app${item.Product.productImage}`} alt={item.Product.productName} className="product-image" />
                 <div className="product-details">
                   <p className="product-name">{item.Product.productName}</p>
                   <p className="product-price">Price: ${item.Product.productPrice}</p>

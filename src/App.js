@@ -61,10 +61,11 @@ const router = createBrowserRouter([
   },
 ]);
 
-const AppRouter = () => (
-  <AuthProvider>
-    {router}
-  </AuthProvider>
-);
+// const AppRouter = () => (
+//   <AuthProvider>
+//     <ParentComponent />
+//     {router}
+//   </AuthProvider>
+// );
 
-export default AppRouter;
+export default router;
