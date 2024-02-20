@@ -4,6 +4,7 @@ import './index.css';
 import router from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './AuthContext'; // Import AuthProvider from AuthContext
+import SignUpLogin from './components/LogIn'; // Import your login page component
 
 
 import {
@@ -13,8 +14,13 @@ import {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider> {/* Wrap your RouterProvider with AuthProvider */}
-      <RouterProvider router={router} />
+    <AuthProvider>
+       {/* Wrap your RouterProvider with AuthProvider */}
+      <RouterProvider router={router}>
+        {/* Render your login page component within the RouterProvider */}
+        <SignUpLogin />
+
+      </RouterProvider>
     </AuthProvider>
   </React.StrictMode>
 );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./CartList.css";
+import  {useAuth} from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const CartList = () => {
@@ -8,20 +9,23 @@ const CartList = () => {
   const [cart, setCart] = useState({ id: null, items: [] });
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkoutClicked, setCheckoutClicked] = useState(false);
+  // const [userId, setUserId] = useState('')
   const [checkoutCompleted, setCheckoutCompleted] = useState(false);
   const navigate = useNavigate();
+   const {user} = useAuth()
 
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const userId = 1; // Replace with the actual user ID or get it from the user's authentication
+        const userId = user.id; // Replace with the actual user ID or get it from the user's authentication
 
-        const response = await axios.get(`https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app/api/cart/get?userId=${userId}`, {
+        const response = await axios.get(`https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/cart/get?userId=${userId}`, {
           headers: { 'ngrok-skip-browser-warning': 'avoid' }
         });
 
         if (response.status === 200) {
-          setCart({ id: response.data.cartId, items: response.data.cartItems });
+          setCart({id: response.data.cartId,  items: response.data.cartItems });
+          console.log(response.data)
           calculateTotalPrice(response.data.cartItems);
           
         } else {
@@ -70,7 +74,7 @@ const CartList = () => {
           <ul className="cart-items">
             {cart.items.map((item) => (
               <li key={item.id} className={`cart-item ${item.status === 'Completed' ? 'completed' : ''}`}>
-                <img src={`https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app${item.Product.productImage}`} alt={item.Product.productName} className="product-image" />
+                <img src={`https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app${item.Product.productImage}`} alt={item.Product.productName} className="product-image" />
                 <div className="product-details">
                   <p className="product-name">{item.Product.productName}</p>
                   <p className="product-price">Price: ${item.Product.productPrice}</p>

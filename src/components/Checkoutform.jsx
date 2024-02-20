@@ -1,62 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import DatePicker from 'react-datepicker'; // Import DatePicker
+import 'react-datepicker/dist/react-datepicker.css'; // Import DatePicker styles
 import "./Checkoutform.css"; // Corrected file name
-
+import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const CheckoutForm = ({ setCheckoutCompleted }) => {
+const CheckoutForm = ({  cartId }) => { // Receive cartId as a prop
   const [loading, setLoading] = useState(false);
   const [shippingInfo, setShippingInfo] = useState({});
-  const [paymentInfo, setPaymentInfo] = useState({});
+  const [paymentInfo, setPaymentInfo] = useState({ expirationDate: null }); // Initialize expirationDate as null
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleShippingChange = (e) => {
     const { name, value } = e.target;
     setShippingInfo({ ...shippingInfo, [name]: value });
   };
 
-  const handlePaymentChange = (e) => {
-    const { name, value } = e.target;
+  const handlePaymentChange = (name, value) => {
     setPaymentInfo({ ...paymentInfo, [name]: value });
   };
 
-  const handleSubmitOrder = async () => {
+  const handleCheckout = async () => {
     try {
       setLoading(true);
-      
-      // Simulate a delay of 2 seconds for demonstration
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      const userId = 1; // Replace with the actual user ID or get it from the user's authentication
-
-      const orderData = {
-        userId: userId,
-        shippingInfo: shippingInfo,
-        paymentInfo: paymentInfo,
-      };
-
-      const response = await axios.post('https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app/api/order/checkout', orderData);
+      const userId = user.id;
+      const response = await axios.post('https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/order/checkout', {
+         userId,
+        shippingInfo,
+        paymentInfo
+      });
 
       if (response.status === 201) {
-        // setCheckoutCompleted(true);
-        // Show alert message
-        alert('Order placed successfully!');
+        console.log('Order placed successfully:', response.data);
         navigate('/SucessFull');
       } else {
         console.error('Checkout failed:', response.data.error);
-        // Show alert message for failure
-        alert('Checkout failed. Please try again.');
       }
     } catch (error) {
       console.error('Error during checkout:', error);
-      // Show alert message for error
-      alert('An error occurred during checkout. Please try again later.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container"> {/* Added container class */}
+    <div className="container">
       {loading && (
         <div className="overlay">
           <div className="loader"></div>
@@ -66,15 +56,23 @@ const CheckoutForm = ({ setCheckoutCompleted }) => {
       <form>
         <input type="text" name="name" placeholder="Name" onChange={handleShippingChange} required />
         <input type="text" name="address" placeholder="Address" onChange={handleShippingChange} required />
-        <input type="text" name="phone" placeholder="Phone" onChange={handleShippingChange} required />
+        <input type="number" name="phone" placeholder="Phone" onChange={handleShippingChange} required />
       </form>
       <h2>Payment Information</h2>
       <form>
-        <input type="text" name="cardNumber" placeholder="Card Number" onChange={handlePaymentChange} required />
-        <input type="text" name="expirationDate" placeholder="Expiration Date" onChange={handlePaymentChange} required />
-        <input type="text" name="cvv" placeholder="CVV" onChange={handlePaymentChange} required />
+        <input type="text" className="expire" name="cardNumber" placeholder="Card Number" onChange={(e) => handlePaymentChange(e.target.name, e.target.value)} required />
+        {/* Use DatePicker for expiration date */}
+        <DatePicker 
+          selected={paymentInfo.expirationDate} 
+          onChange={(date) => handlePaymentChange("expirationDate", date)} 
+          dateFormat="DD/MM/yyyy"
+          showDateMonthYearPicker
+          placeholderText="Expiration Date"
+          required 
+        />
+        <input type="password" name="cvv" placeholder="CVV" onChange={(e) => handlePaymentChange(e.target.name, e.target.value)} required />
       </form>
-      <button type="button" className='btn-4' onClick={handleSubmitOrder} disabled={loading}>
+      <button type="button" className='btn-4' onClick={handleCheckout} disabled={loading}>
         {loading ? 'Processing...' : 'Checkout'}
       </button>
     </div>

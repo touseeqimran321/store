@@ -1,50 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useAuth } from '../AuthContext';
+import { useNavigate } from 'react-router-dom';
+import './Profile.css'; // Import the CSS file
 
-const Profile = () => {
-  const { user } = useAuth(); // Access the user object from the AuthContext
-  const [profileUser, setProfileUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+const UserProfile = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); // State for loading animation
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        if (user) {
-          const userId = user.id; // Access the user ID from the user object
-          const response = await axios.get(`https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app/api/user/${userId}`, {
-            headers: {
-              'ngrok-skip-browser-warning': 'avoid'
-            }
-          });
-          setProfileUser(response.data);
-        }
-      } catch (error) {
-        setError('Error fetching user data');
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    fetchUserProfile();
-  }, [user]);
+    // Simulate loading delay with setTimeout
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    // Cleanup timer to prevent memory leaks
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/List');
+  };
 
   return (
     <div>
-      {error && <p>{error}</p>}
-      {profileUser !== null ? (
-        <div>
-          <h2>User Profile</h2>
-          <p>Username: {profileUser.username}</p>
-          <p>Email: {profileUser.email}</p>
-          {/* Display other user data as needed */}
+      {loading ? ( // Show full-page loading animation if loading is true
+        <div className="full-page-loader">
+          <div className="loading-spinner"></div>
         </div>
       ) : (
-        <p>User does not exist</p>
+        <div className="profile-content">
+          {user ? (
+            <div className="user-details">
+              <h2>User Profile</h2>
+              <p><strong>Name:</strong> {user.username}</p>
+              <p><strong>Email:</strong> {user.email}</p>
+              {/* Add more user details here */}
+              <button onClick={handleLogout}>Logout</button>
+            </div>
+          ) : (
+            <p className="no-user">No user logged in.</p>
+          )}
+        </div>
       )}
     </div>
   );
 };
 
-export default Profile;
+export default UserProfile;

@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ProductList.css';
+import { useAuth } from '../AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const {user} = useAuth();
+
+  console.log(user,'13333')
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get('https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app/api/products', {
+        const response = await axios.get('https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/products', {
           headers: {
             'ngrok-skip-browser-warning': 'avoid',
           },
@@ -37,15 +41,21 @@ const ProductList = () => {
   }, []);
 
   const addToCart = async (product) => {
-    const userId = 1
+    if (!(user?.id)) {
+      console.error('User is not logged in and signed up.',user); // Handle the case where user is not logged in
+      return;
+    }
+  
+    // const userId = userId; // Access userId if user is defined
+  
     const productId = product.id; // Assuming product.id exists
     const quantity = 1; // Default quantity is 1
     setIsLoading(true);
     try {
       const response = await axios.post(
-        'https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app/api/cart/add',
+        'https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/cart/add',
         {
-          userId,
+          userId:user.id,
           items: [{ productId, quantity }],
         },
         {
@@ -65,10 +75,12 @@ const ProductList = () => {
       setIsLoading(false);
     }
   };
-    
+  
   const handleLinkClick = () => {
     setIsLoading(true);
+    // Handle link click logic, if any
   };
+  
 
   return (
     <div className="product-list-container">
@@ -95,7 +107,7 @@ const ProductList = () => {
       )}
   <img
     className="product-image-1"
-    src={`https://b437-2400-adc5-453-1500-15bb-ce97-5be3-96cd.ngrok-free.app${product.productImage}`}
+    src={`https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app${product.productImage}`}
     alt={`${product.productName} - Product Image`}
   />
 </Link>
