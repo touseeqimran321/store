@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
           throw new Error('Token not found');
         }
 
-        const response = await axios.get('https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/get', {
+        const response = await axios.get('https://a8ff-111-88-233-53.ngrok-free.app/api/get', {
           headers: {
             Authorization: `Bearer ${token}`,
             'ngrok-skip-browser-warning': 'avoid',
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
       throw new Error('User already exists');
     }
 
-    const response = await axios.post('https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/signup', { username, email, password });
+    const response = await axios.post('https://a8ff-111-88-233-53.ngrok-free.app/api/signup', { username, email, password });
     const { token, user } = response.data;
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
 const login = async ({ email, password }) => {
   setIsLoading(true);
   try {
-    const response = await axios.post('https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/login', { email, password });
+    const response = await axios.post('https://a8ff-111-88-233-53.ngrok-free.app/api/login', { email, password });
     const { token, user } = response.data;
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -87,7 +87,7 @@ const login = async ({ email, password }) => {
 
   const checkUserExists = async (email) => {
     try {
-      const response = await axios.post('https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/checkUser', { email });
+      const response = await axios.post('https://a8ff-111-88-233-53.ngrok-free.app/api/checkUser', { email });
       return { exists: response.data.exists };
     } catch (error) {
       console.error('Error checking if user exists:', error);

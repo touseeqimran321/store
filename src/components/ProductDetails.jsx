@@ -16,7 +16,7 @@ const {user} =useAuth();
     const fetchProductDetails = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/products/${id}`, {
+        const response = await axios.get(`https://a8ff-111-88-233-53.ngrok-free.app/api/products/${id}`, {
           headers: {
             'ngrok-skip-browser-warning': 'avoid',
           }
@@ -41,7 +41,7 @@ const {user} =useAuth();
     // alert(`Adding ${quantity} product(s) to cart`);
     try {
       const response = await axios.post(
-        'https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/cart/add',
+        'https://a8ff-111-88-233-53.ngrok-free.app/api/cart/add',
         
         {userId:user.id,
            items: [{ productId, quantity }] },
@@ -75,7 +75,7 @@ const {user} =useAuth();
           <div className="product-image-container">
             <img
               className="product-image-2"
-              src={`https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app${productData.productImage}`}
+              src={`https://a8ff-111-88-233-53.ngrok-free.app${productData.productImage}`}
               alt={`${productData.productName} - Product Image`}
             />
           </div>

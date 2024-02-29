@@ -7,14 +7,15 @@ export default function Nav({ handleNavigationClick }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [showProfileOptions, setShowProfileOptions] = useState(false); // State for profile options visibility
   const { isAuthenticated, logout } = useAuth();
-
+const {user} = useAuth()
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
 
   const handleProfileClick = () => {
-    setShowProfileOptions(prevState => !prevState);
-  }
+    // Toggle the visibility of profile options dropdown
+    setShowProfileOptions(!showProfileOptions);
+  };
 
   const handleLogout = () => {
     logout();
@@ -77,6 +78,7 @@ export default function Nav({ handleNavigationClick }) {
           <ul className="navbar-nav">
             {isAuthenticated ? (
               <li className="nav-item dropdown">
+                {/* Use "dropdown" class for the parent li */}
                 <button 
                   className="nav-link dropdown-toggle" 
                   onClick={handleProfileClick}
@@ -85,10 +87,13 @@ export default function Nav({ handleNavigationClick }) {
                   Profile
                 </button>
                 {showProfileOptions && (
-                  <ul className="dropdown-menu dropdown-menu-end">
-                    <li><Link className="dropdown-item" to="/Settings">Settings</Link></li>
-                    <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
-                  </ul>
+                 <ul className="dropdown-menu dropdown-menu-end show">
+                 <li><p><strong>Name:</strong> {user.username}</p></li>
+                 <li><p><strong>Email:</strong> {user.email}</p></li>
+                 <li><Link className="dropdown-item" to="/History">History</Link></li>
+                 <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+               </ul>
+               
                 )}
               </li>
             ) : (

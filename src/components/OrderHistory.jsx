@@ -1,25 +1,28 @@
+// OrderHistory.js
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// import "./OrderHistory.css"; // Assuming you have a CSS file for styling
+import { useAuth } from '../AuthContext';
+import './OrderHistory.css'
 
 const OrderHistory = () => {
-  const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState([]);
-  
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+
   useEffect(() => {
     const fetchOrderHistory = async () => {
       try {
-        setLoading(true);
-        // Fetch order history from the server
-        const response = await axios.get('https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/order/history');
-        if (response.status === 200) {
-          setOrders(response.data.orders);
-        } else {
-          console.error('Error fetching order history:', response.data.error);
-        }
+        const userId = user.id;
+        const response = await axios.get(`https://a8ff-111-88-233-53.ngrok-free.app/api/order/history/${userId}`,{
+          headers:{
+            "ngrok-skip-browser-warning": "avoid"
+          }
+        });
+        setOrders(response.data.orders);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching order history:', error);
-      } finally {
         setLoading(false);
       }
     };
@@ -28,26 +31,32 @@ const OrderHistory = () => {
   }, []);
 
   return (
-    <div className="order-history-container">
+    <div className="order-history">
+      <h2>Order History</h2>
       {loading ? (
-        <div className="loading">Loading...</div>
+        <p>Loading...</p>
       ) : (
-        <div>
-          <h2>Order History</h2>
-          {orders && orders.length > 0 ? (
-            <ul className="order-list">
-              {orders.map((order) => (
-                <li key={order.id} className="order-item">
-                  <div>Order ID: {order.id}</div>
-                  <div>Order Date: {order.createdAt}</div>
-                  {/* Add more details you want to display */}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No orders found</p>
-          )}
-        </div>
+        <ul>
+          {orders.map((order) => (
+            <li key={order.UserId}>
+              <p>Status: {order.status}</p>
+              <h4>Cart Items:</h4>
+              <ul>
+                {order.CartItems.map((cartItem) => (
+                  <li key={cartItem.id}>
+                    <img
+                      className="product-image-1"
+                      src={`https://a8ff-111-88-233-53.ngrok-free.app${cartItem.Product.productImage}`}
+                    />
+                    <p>Product Name: {cartItem.Product.productName}</p>
+                    <p>Product Price: {cartItem.Product.productPrice}</p>
+                    <p>Quantity: {cartItem.quantity}</p>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );

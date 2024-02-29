@@ -1,0 +1,43 @@
+/* OrderHistory.css */
+
+.order-history {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .order-history h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .order-history ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .order-history li {
+    margin-bottom: 20px;
+  }
+  
+  .order-history h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .order-history h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .order-history p {
+    margin: 5px 0;
+  }
+  
+  .order-history .product-image-1 {
+    max-width: 100px;
+    height: auto;
+    margin-right: 10px;
+  }
+  

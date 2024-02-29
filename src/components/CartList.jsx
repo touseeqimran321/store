@@ -19,7 +19,7 @@ const CartList = () => {
       try {
         const userId = user.id; // Replace with the actual user ID or get it from the user's authentication
 
-        const response = await axios.get(`https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app/api/cart/get?userId=${userId}`, {
+        const response = await axios.get(`https://a8ff-111-88-233-53.ngrok-free.app/api/cart/get?userId=${userId}`, {
           headers: { 'ngrok-skip-browser-warning': 'avoid' }
         });
 
@@ -74,7 +74,7 @@ const CartList = () => {
           <ul className="cart-items">
             {cart.items.map((item) => (
               <li key={item.id} className={`cart-item ${item.status === 'Completed' ? 'completed' : ''}`}>
-                <img src={`https://a714-2400-adc5-453-1500-60e3-4d57-bdbb-a819.ngrok-free.app${item.Product.productImage}`} alt={item.Product.productName} className="product-image" />
+                <img src={`https://a8ff-111-88-233-53.ngrok-free.app${item.Product.productImage}`} alt={item.Product.productName} className="product-image" />
                 <div className="product-details">
                   <p className="product-name">{item.Product.productName}</p>
                   <p className="product-price">Price: ${item.Product.productPrice}</p>
